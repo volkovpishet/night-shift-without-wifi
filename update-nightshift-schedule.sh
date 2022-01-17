@@ -37,9 +37,14 @@ SCHEDULE_RES=$(curl -s "https://api.sunrise-sunset.org/json?lat=$LAT&lng=$LON&da
 SUNRISE=$(extractTimeFromRes "${SCHEDULE_RES}" sunrise)
 SUNSET=$(extractTimeFromRes "${SCHEDULE_RES}" sunset)
 
+SUNRISE_WITH_TZ=$(applyTzToTime $SUNRISE)
+SUNSET_WITH_TZ=$(applyTzToTime $SUNSET)
+
+echo $(date +%Y-%m-%d)
 echo "Lat: $LAT"
 echo "Lon: $LON"
-echo "Sunrise time (UTC): $SUNRISE"
-echo "Sunset time (UTC): $SUNSET"
+echo "Sunrise time: $SUNRISE_WITH_TZ"
+echo "Sunset time: $SUNSET_WITH_TZ"
+echo "###"
 
-nightlight schedule $(applyTzToTime $SUNSET) $(applyTzToTime $SUNRISE)
+nightlight schedule $SUNSET_WITH_TZ $SUNRISE_WITH_TZ
