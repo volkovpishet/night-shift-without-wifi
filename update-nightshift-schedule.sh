@@ -14,11 +14,11 @@ function extractTimeFromRes() {
 function applyTzToTime() {
     HOURS_UTC=$(echo $1 | awk -F ":" '{print $1}')
     MINUTES=$(echo $1 | awk -F ":" '{print $2}')
-    SUFFIX=$(echo $1 | awk -F ":" '{print $3}')
+    SUFFIX=$(echo $1 | rev | cut -c1-2 | rev)
     TZ_OFFSET_EXPR=$(date +%Z | awk '{ gsub(/([[:alpha:]]+|[[:digit:].-]+|[^[:alnum:].-]+)/,"&\n",$0) ; printf $0 }')
     HOURS_LOCAL=$(expr $HOURS_UTC $TZ_OFFSET_EXPR)
 
-    echo $HOURS_LOCAL:$MINUTES:$SUFFIX;
+    echo $HOURS_LOCAL:$MINUTES$SUFFIX;
 }
 
 # Usage: extractConfValue CONFIG_AS_STRING FIELD
